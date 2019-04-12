@@ -1,60 +1,74 @@
-swagger: "2.1"
-openapi: 3.0.0
+swagger: "2.0"
 info:
   title: Food-logistics API
   description: API description in Markdown.
   version: 1.0.0
 host: api.food.logistics
 schemes:
-- https
+- http
 paths:
-  /ingredients:
+  /ingredients?{offset}&{limit}{start_time}&{stop_time}:
     get:
       summary: Returns a list of all ingredients
+      parameters:
+        - in: path
+          name: offset
+          required: true
+          type: integer
+          minimum: 0
+        - in: path
+          name: limit
+          required: true
+          type: integer
+          minimum: 1
+        - in: path
+          name: start_time
+          required: true
+          type: string
+        - in: path
+          name: stop_time
+          required: true
+          type: string
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ingredient_id:
-                      type: integer
-                    ingredient_name:
-                      type: string
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                ingredient_id:
+                  type: integer
+                ingredient_name:
+                  type: string
   /ingredients/{id}:
     get:
       summary: Returns a description of selected ingridient
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
           schema:
             type: integer
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ingredient_id:
-                    type: integer
-                  ingredient_name:
-                    type: string
-                  ingredient_desc:
-                    type: string
+          schema:
+            type: object
+            properties:
+              ingredient_id:
+                type: integer
+              ingredient_name:
+                type: string
+              ingredient_desc:
+                type: string
         404:
           description: Ingredient not found.
   /ingredients/add:
     post:
       summary: Add new ingredient
       parameters:
-        - name: new_ingredient
+        - name: ingredient
           in: body
           required: true
           schema:
@@ -69,29 +83,25 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ingredient_id:
-                    type: integer
-                  ingredient_name:
-                    type: string
-                  ingredient_desc:
-                    type: string
+          schema:
+            type: object
+            properties:
+              ingredient_id:
+                type: integer
   /ingredients/edit:
     put:
       summary: Edit ingredient
       parameters:
-      - name: update_ingredient
+      - name: ingredient
         in: body
         required: true
         schema:
           type: object
           required:
-          - ingredient_name
+            - ingredient_id
           properties:
+            ingredient_id:
+              type: integer
             ingredient_name:
               type: string
             ingredient_desc:
@@ -99,17 +109,11 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ingredient_id:
-                    type: integer
-                  ingredient_name:
-                    type: string
-                  ingredient_desc:
-                    type: string
+          schema:
+            type: object
+            properties:
+              ingredient_id:
+                type: integer
         404:
           description: Ingredient not found.
   /dish:
@@ -121,19 +125,17 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    dish_id:
-                      type: integer
-                    dish_name:
-                      type: string
-                    dish_desc:
-                      type: string
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dish_id:
+                  type: integer
+                dish_name:
+                  type: string
+                dish_desc:
+                  type: string
   /dish/{id}:
     get:
       summary: Returns detailed dish.
@@ -146,19 +148,17 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    dish_id:
-                      type: integer
-                    dish_name:
-                      type: string
-                    dish_desc:
-                      type: string
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dish_id:
+                  type: integer
+                dish_name:
+                  type: string
+                dish_desc:
+                  type: string
   /dish/add:
     post:
       summary: Add new dish
@@ -178,19 +178,17 @@ paths:
       responses:
         '200':
           description: Company was added successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    dish_id:
-                      type: integer
-                    dish_name:
-                      type: string
-                    dish_desc:
-                      type: string
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dish_id:
+                  type: integer
+                dish_name:
+                  type: string
+                dish_desc:
+                  type: string
   /dish/edit:
     put:
       summary: Edits selected dish.
@@ -212,17 +210,15 @@ paths:
       responses:
         200:
           description: ok
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  dish_id:
-                    type: integer
-                  dish_name:
-                    type: string
-                  dish_desc:
-                    type: string
+          schema:
+            type: object
+            properties:
+              dish_id:
+                type: integer
+              dish_name:
+                type: string
+              dish_desc:
+                type: string
         404:
           description: Dish not found.
   /dish/delete:
