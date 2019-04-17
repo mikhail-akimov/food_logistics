@@ -27,7 +27,7 @@ paths:
                       type: string
   /ingredients/{id}:
     get:
-      summary: Returns a description of selected ingridient
+      summary: Returns detailed ingridient.
       parameters:
         - name: id
           in: path
@@ -159,6 +159,33 @@ paths:
                       type: string
                     dish_desc:
                       type: string
+  /dish/{id}/ingredients:
+    get:
+      summary: Returns detailed dish.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    dish_id:
+                      type: integer
+                    dish_name:
+                      type: string
+                    dish_ingredients:
+                      type: array
+                      items:
+                        type:
   /dish/add:
     post:
       summary: Add new dish
@@ -233,7 +260,12 @@ paths:
         in: body
         required: true
         schema:
-          type: integer
+          type: object
+          required:
+            - dish_id
+          properties:
+            dish_id:
+              type: integer
       responses:
         200:
           description: The dish successfully deleted.
