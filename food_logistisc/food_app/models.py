@@ -16,22 +16,34 @@ class Ingredients(models.Model):
         default=GRAMME,
     )
 
+    def __str__(self):
+        return self.ingredient_name
+
 
 class Recipes(models.Model):
     recipe_name = models.CharField(max_length=50)
     recipe_desc = models.CharField(max_length=200)
-    recipe_persons = models.PositiveIntegerField(max_length=2, default=1)
+    recipe_persons = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.recipe_name
 
 
 class Compositions(models.Model):
     composition_name = models.CharField(max_length=50)
-    recipe_desc = models.CharField(max_length=200)
     recipe = models.ForeignKey(Recipes, on_delete=models.SET_NULL, null=True)
     ingredient = models.OneToOneField(Ingredients, on_delete=models.SET_NULL, null=True)
+    ingredient_amount = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.composition_name
 
 
 class Dishes(models.Model):
     dish_name = models.CharField(max_length=50)
     dish_desc = models.CharField(max_length=200)
-    dish_persons = models.PositiveIntegerField(max_length=2, default=1)
+    dish_persons = models.PositiveIntegerField(default=1)
     dish_recipe = models.ForeignKey(Recipes, on_delete=models.CASCADE, null=False, blank=False)
+
+    def __str__(self):
+        return self.dish_name
