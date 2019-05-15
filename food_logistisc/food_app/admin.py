@@ -10,14 +10,14 @@ class IngredientsAdmin(admin.ModelAdmin):
 
 @admin.register(Recipes)
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('recipe_name', 'recipe_desc', 'recipe_persons')
-    fields = ('recipe_name', 'recipe_desc', 'recipe_persons')
+    list_display = ('recipe_name', 'recipe_desc', 'recipe_persons', 'compositions')
+    fields = ('recipe_name', 'recipe_desc', 'recipe_persons', 'compositions')
 
 
 @admin.register(Compositions)
 class CompositionsAdmin(admin.ModelAdmin):
-    list_display = ('composition_name', 'recipe', 'ingredient', 'ingredient_amount')
-    fields = ('composition_name', 'recipe', 'ingredient', 'ingredient_amount')
+    list_display = ('composition_name', 'ingredient', 'ingredient_amount')
+    fields = ('composition_name', 'ingredient', 'ingredient_amount')
 
 
 @admin.register(Dishes)
