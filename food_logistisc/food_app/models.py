@@ -20,23 +20,23 @@ class Ingredients(models.Model):
         return self.ingredient_name
 
 
-class Compositions(models.Model):
-    composition_name = models.CharField(max_length=50)
-    ingredient = models.OneToOneField(Ingredients, on_delete=models.SET_NULL, null=True)
-    ingredient_amount = models.PositiveIntegerField(default=1)
-
-    def __str__(self):
-        return self.composition_name
-
-
 class Recipes(models.Model):
     recipe_name = models.CharField(max_length=50)
     recipe_desc = models.CharField(max_length=200)
     recipe_persons = models.PositiveIntegerField(default=1)
-    compositions = models.ForeignKey(Compositions, on_delete=models.CASCADE, blank=False)
 
     def __str__(self):
         return self.recipe_name
+
+
+class Compositions(models.Model):
+    composition_name = models.CharField(max_length=50)
+    ingredient = models.ForeignKey(Ingredients, on_delete=models.SET_NULL, null=True)
+    ingredient_amount = models.PositiveIntegerField(default=1)
+    recipe = models.ForeignKey(Recipes, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.composition_name
 
 
 class Dishes(models.Model):

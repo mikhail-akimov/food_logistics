@@ -2,6 +2,12 @@ from django.contrib import admin
 from .models import Ingredients, Recipes, Compositions, Dishes
 
 
+class CompositionInLine(admin.StackedInline):
+    model = Compositions
+    extra = 0
+    fields = ['composition_name', ('ingredient', 'ingredient_amount')]
+
+
 @admin.register(Ingredients)
 class IngredientsAdmin(admin.ModelAdmin):
     list_display = ('ingredient_name', 'ingredient_desc', 'ingredient_measure')
@@ -10,8 +16,9 @@ class IngredientsAdmin(admin.ModelAdmin):
 
 @admin.register(Recipes)
 class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('recipe_name', 'recipe_desc', 'recipe_persons', 'compositions')
-    fields = ('recipe_name', 'recipe_desc', 'recipe_persons', 'compositions')
+    list_display = ('recipe_name', 'recipe_desc', 'recipe_persons')
+    fields = ('recipe_name', 'recipe_desc', 'recipe_persons')
+    inlines = [CompositionInLine]
 
 
 @admin.register(Compositions)
