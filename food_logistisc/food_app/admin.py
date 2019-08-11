@@ -1,33 +1,69 @@
 from django.contrib import admin
-from .models import Ingredients, Recipes, Compositions, Dishes
+from .models import (
+    Ingredient,
+    Measure,
+    Recipe,
+    Recipe2Ingredient,
+    Dish,
+    Meal,
+    Meal2Dish,
+    Day2Meal,
+)
 
 
-class CompositionInLine(admin.StackedInline):
-    model = Compositions
+class MealsInline(admin.StackedInline):
+    model = Meal
     extra = 0
-    fields = ['composition_name', ('ingredient', 'ingredient_amount')]
+    fields = [('meal_dish', 'persons')]
 
 
-@admin.register(Ingredients)
-class IngredientsAdmin(admin.ModelAdmin):
-    list_display = ('ingredient_name', 'ingredient_desc', 'ingredient_measure')
-    fields = ('ingredient_name', 'ingredient_desc', 'ingredient_measure')
+class Recipe2IngredientsInline(admin.StackedInline):
+    model = Recipe2Ingredient
+    extra = 0
+    verbose_name = 'Ingredient'
+    fields = [('ingredient_id', 'value', 'measure_id')]
 
 
-@admin.register(Recipes)
-class RecipesAdmin(admin.ModelAdmin):
-    list_display = ('recipe_name', 'recipe_desc', 'recipe_persons')
-    fields = ('recipe_name', 'recipe_desc', 'recipe_persons')
-    inlines = [CompositionInLine]
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('ingredient_name',)
 
 
-@admin.register(Compositions)
-class CompositionsAdmin(admin.ModelAdmin):
-    list_display = ('composition_name', 'ingredient', 'ingredient_amount')
-    fields = ('composition_name', 'ingredient', 'ingredient_amount')
+@admin.register(Measure)
+class MeasureAdmin(admin.ModelAdmin):
+    list_display = ('measure_name',)
 
 
-@admin.register(Dishes)
-class DishesAdmin(admin.ModelAdmin):
-    list_display = ('dish_name', 'dish_desc', 'dish_persons', 'dish_recipe')
-    fields = ('dish_name', 'dish_desc', 'dish_persons', 'dish_recipe')
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
+    list_display = ('recipe_name', 'recipe_description', 'default_persons')
+    inlines = [Recipe2IngredientsInline]
+
+
+@admin.register(Recipe2Ingredient)
+class Recipe2IngredientsAdmin(admin.ModelAdmin):
+    list_display = ('recipe_id', 'ingredient_id', 'value', 'measure_id')
+
+
+@admin.register(Dish)
+class DishAdmin(admin.ModelAdmin):
+    list_display = ('dish_name', 'dish_recipe')
+
+
+@admin.register(Meal)
+class MealAdmin(admin.ModelAdmin):
+    list_display = ('meal_dish', 'persons')
+    fields = ('meal_dish', 'persons')
+
+
+@admin.register(Meal2Dish)
+class Meal2DishAdmin(admin.ModelAdmin):
+    list_display = ('dish_id', 'meal_id')
+
+
+@admin.register(Day2Meal)
+class Day2MealAdmin(admin.ModelAdmin):
+    list_display = ('date', )
+    inlines = [MealsInline]
+
+
