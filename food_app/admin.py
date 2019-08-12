@@ -6,7 +6,6 @@ from .models import (
     Recipe2Ingredient,
     Dish,
     Meal,
-    Meal2Dish,
     Day2Meal,
 )
 
@@ -54,11 +53,6 @@ class DishAdmin(admin.ModelAdmin):
 class MealAdmin(admin.ModelAdmin):
     list_display = ('meal_dish', 'persons')
     fields = ('meal_dish', 'persons')
-
-
-@admin.register(Meal2Dish)
-class Meal2DishAdmin(admin.ModelAdmin):
-    list_display = ('dish_id', 'meal_id')
 
 
 @admin.register(Day2Meal)

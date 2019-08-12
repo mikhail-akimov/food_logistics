@@ -53,11 +53,3 @@ class Meal(models.Model):
 
     def __str__(self):
         return '{}'.format(self.meal_dish)
-
-
-class Meal2Dish(models.Model):
-    dish_id = models.ForeignKey(Dish, on_delete=models.SET_NULL, null=True)
-    meal_id = models.ForeignKey(Meal, on_delete=models.SET_NULL, null=True)
-
-
-
