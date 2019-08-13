@@ -51,13 +51,13 @@ class DishAdmin(admin.ModelAdmin):
 
 @admin.register(Meal)
 class MealAdmin(admin.ModelAdmin):
-    list_display = ('meal_dish', 'persons')
+    list_display = ('meal_dish', 'persons', 'to_ingredients')
     fields = ('meal_dish', 'persons')
 
 
 @admin.register(Day2Meal)
 class Day2MealAdmin(admin.ModelAdmin):
-    list_display = ('date', )
+    list_display = ('date', 'get_all_ingredients')
     inlines = [MealsInline]
 
 
