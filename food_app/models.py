@@ -58,7 +58,7 @@ class Day2Meal(models.Model):
                     menu[ing.ingredient_id] = (ing.value / recipe_persons) * meal_persons
         for product in menu.keys():
             menu[product] = {'value': menu[product],
-                            'measure': measures[product]}
+                             'measure': measures[product]}
         return menu
 
 
@@ -71,14 +71,8 @@ class Meal(models.Model):
         return '{}'.format(self.meal_dish)
 
     def to_ingredients(self):
-        ingreds = Recipe2Ingredient.objects.all().filter(recipe_id=self.meal_dish.dish_recipe.pk)
-        # print(ingreds)
+        ingredients = Recipe2Ingredient.objects.all().filter(recipe_id=self.meal_dish.dish_recipe.pk)
         result = []
-        for ingred in ingreds:
-            result.append({'ing': ingred.ingredient_id, 'value': ingred.value, 'measure': ingred.measure_id})
-        # print(result)
-        return '{}'.format(ingreds)
-
-"""
-
-"""
+        for item in ingredients:
+            result.append({'ing': item.ingredient_id, 'value': item.value, 'measure': item.measure_id})
+        return '{}'.format(ingredients)
