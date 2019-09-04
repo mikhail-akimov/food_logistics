@@ -42,23 +42,33 @@ class Dish(models.Model):
 class Day2Meal(models.Model):
     date = models.DateField()
 
+    def get_all_meals(self):
+        meals = list(Meal.objects.all().filter(meal_date=self))
+        day_meals = {}
+        for meal in meals:
+            day_meals[str(meal)] = {'persons': int(meal.persons)}
+        return day_meals
+
     def get_all_ingredients(self):
         meals = list(Meal.objects.all().filter(meal_date=self))
         measures = {}
+        ing_mapping = {}
         menu = {}
         for meal in meals:
             ingredients = Recipe2Ingredient.objects.all().filter(recipe_id=meal.meal_dish.dish_recipe.pk)
             recipe_persons = Recipe.objects.get(pk=meal.meal_dish.dish_recipe.pk).default_persons
             meal_persons = meal.persons
             for ing in ingredients:
-                measures[ing.ingredient_id] = ing.measure_id
-                if menu.get(ing.ingredient_id):
-                    menu[ing.ingredient_id] += (ing.value / recipe_persons) * meal_persons
+                ing_mapping[str(ing.ingredient_id)] = int(ing.id)
+                measures[str(ing.ingredient_id)] = str(ing.measure_id)
+                if menu.get(str(ing.ingredient_id)):
+                    menu[str(ing.ingredient_id)] += (ing.value / recipe_persons) * meal_persons
                 else:
-                    menu[ing.ingredient_id] = (ing.value / recipe_persons) * meal_persons
+                    menu[str(ing.ingredient_id)] = (ing.value / recipe_persons) * meal_persons
         for product in menu.keys():
-            menu[product] = {'value': menu[product],
-                             'measure': measures[product]}
+            menu[str(product)] = {'id': int(ing_mapping[product]),
+                            'value': menu[product],
+                            'measure': measures[product]}
         return menu
 
 
